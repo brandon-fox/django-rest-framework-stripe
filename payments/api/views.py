@@ -152,10 +152,10 @@ class ChangeCardTokenView(StripeView):
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        except stripe.CardError as e:
+        except stripe.StripeError as e:
             error_data = {u'error': smart_str(e) or u'Unknown error'}
             return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
-
+            
 
 class CancelView(StripeView):
     """ Cancel customer subscription """
