@@ -60,6 +60,7 @@ class CurrentCustomerDetailView(StripeView, generics.RetrieveAPIView):
 
     def get_object(self):
         return self.get_customer()
+       
 
 
 class SubscriptionView(StripeView):
@@ -155,6 +156,16 @@ class ChangeCardTokenView(StripeView):
         except stripe.StripeError as e:
             error_data = {u'error': smart_str(e) or u'Unknown error'}
             return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            customer = self.get_customer()
+            customer.delete_card()
+            return Response({'success': True}, status=status.HTTP_202_ACCEPTED)
+        except stripe.StripeError as e:
+            error_data = {u'error': smart_str(e) or u'Unknown error'}
+            return Response(error_data, status=status.HTTP_400_BAD_REQUEST)
+
             
 
 class CancelView(StripeView):
