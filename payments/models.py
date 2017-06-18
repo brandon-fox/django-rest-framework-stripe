@@ -424,6 +424,15 @@ class Customer(StripeObject):
         cu.save()
         self.save_card(cu)
 
+    def delete_card(self):
+        cu = self.stripe_customer
+        cu.active_card.delete()
+        self.card_fingerprint = ""
+        self.card_last_4 = ""
+        self.card_kind = ""
+        self.save()
+        card_changed.send(sender=self, stripe_response=cu)
+
     def save_card(self, cu=None):
         cu = cu or self.stripe_customer
         active_card = cu.active_card
