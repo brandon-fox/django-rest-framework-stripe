@@ -6,12 +6,13 @@ Django REST Framework wrapper of the payments Django app for Stripe
 
 * Forked (https://github.com/pinax/django-stripe-payments) and wrapped with Django REST Framework.
 * All the templates is gone
+* Forked (https://github.com/categorilla/django-rest-framework-stripe) for renaming app.
 
 Install
 ======================
 * pip install django-rest-framework-stripe
 * Add 'payments' to INSTALLED_APPS
-* **Add to urls.py:** ``url(r"^api/stripe/", include("payments.api.urls"))``
+* **Add to urls.py:** ``url(r"^api/stripe/", include("drfstripe.api.urls"))``
 
 Endpoints
 ======================

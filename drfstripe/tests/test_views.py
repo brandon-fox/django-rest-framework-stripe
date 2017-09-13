@@ -55,9 +55,9 @@ class AjaxViewsTests(TestCase):
             amount=decimal.Decimal("19.99")
         )
 
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.send_invoice")
-    @patch("payments.models.Customer.retry_unpaid_invoices")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.send_invoice")
+    @patch("drfstripe.models.Customer.retry_unpaid_invoices")
     def test_change_card(self, retry_mock, send_mock, update_mock):
         self.client.login(username=self.user.username, password=self.password)
         response = self.client.post(
@@ -70,9 +70,9 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(retry_mock.call_count, 1)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.send_invoice")
-    @patch("payments.models.Customer.retry_unpaid_invoices")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.send_invoice")
+    @patch("drfstripe.models.Customer.retry_unpaid_invoices")
     def test_change_card_error(self, retry_mock, send_mock, update_mock):
         update_mock.side_effect = stripe.CardError("Bad card", "Param", "CODE")
         self.client.login(username=self.user.username, password=self.password)
@@ -86,9 +86,9 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(retry_mock.call_count, 0)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.send_invoice")
-    @patch("payments.models.Customer.retry_unpaid_invoices")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.send_invoice")
+    @patch("drfstripe.models.Customer.retry_unpaid_invoices")
     def test_change_card_no_invoice(self, retry_mock, send_mock, update_mock):
         self.user.customer.card_fingerprint = "XXXXXX"
         self.user.customer.save()
@@ -103,7 +103,7 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(retry_mock.call_count, 1)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.subscribe")
     def test_change_plan_with_subscription(self, subscribe_mock):
         self.client.login(username=self.user.username, password=self.password)
         response = self.client.post(
@@ -114,7 +114,7 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(subscribe_mock.call_count, 1)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.subscribe")
     def test_change_plan_no_subscription(self, subscribe_mock):
         self.user.customer.current_subscription.delete()
         self.client.login(username=self.user.username, password=self.password)
@@ -126,7 +126,7 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(subscribe_mock.call_count, 1)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.subscribe")
     def test_change_plan_invalid_form(self, subscribe_mock):
         self.client.login(username=self.user.username, password=self.password)
         response = self.client.post(
@@ -137,7 +137,7 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(subscribe_mock.call_count, 0)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.subscribe")
     def test_change_plan_stripe_error(self, subscribe_mock):
         subscribe_mock.side_effect = stripe.StripeError(
             "Bad card",
@@ -153,9 +153,9 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(subscribe_mock.call_count, 1)
         self.assertEqual(response.status_code, 200)
 
-    @patch("payments.models.Customer.subscribe")
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.create")
+    @patch("drfstripe.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.create")
     def test_subscribe(self, create_cus_mock, upd_card_mock, subscribe_mock):
         self.client.login(username=self.user.username, password=self.password)
         response = self.client.post(
@@ -172,9 +172,9 @@ class AjaxViewsTests(TestCase):
             reverse("payments_history")
         )
 
-    @patch("payments.models.Customer.subscribe")
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.create")
+    @patch("drfstripe.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.create")
     def test_subscribe_no_customer(self, create_cus_mock, upd_card_mock, subscribe_mock):
         self.client.login(username=self.user.username, password=self.password)
         Customer.objects.all().delete()
@@ -190,9 +190,9 @@ class AjaxViewsTests(TestCase):
             reverse("payments_history")
         )
 
-    @patch("payments.models.Customer.subscribe")
-    @patch("payments.models.Customer.update_card")
-    @patch("payments.models.Customer.create")
+    @patch("drfstripe.models.Customer.subscribe")
+    @patch("drfstripe.models.Customer.update_card")
+    @patch("drfstripe.models.Customer.create")
     def test_subscribe_error(self, create_cus_mock, upd_card_mock, subscribe_mock):
         self.client.login(username=self.user.username, password=self.password)
         upd_card_mock.side_effect = stripe.StripeError("foo")
@@ -217,7 +217,7 @@ class AjaxViewsTests(TestCase):
         self.assertEqual(response.context['error'],
                          {'plan': ['This field is required.']})
 
-    @patch("payments.models.Customer.cancel")
+    @patch("drfstripe.models.Customer.cancel")
     def test_cancel(self, cancel_mock):
         self.client.login(username=self.user.username, password=self.password)
         self.client.post(
@@ -227,7 +227,7 @@ class AjaxViewsTests(TestCase):
         )
         self.assertEqual(cancel_mock.call_count, 1)
 
-    @patch("payments.models.Customer.cancel")
+    @patch("drfstripe.models.Customer.cancel")
     def test_cancel_error(self, cancel_mock):
         cancel_mock.side_effect = stripe.StripeError("foo")
         self.client.login(username=self.user.username, password=self.password)

@@ -38,10 +38,10 @@ class CommandTests(TestCase):
         self.assertEqual(kwargs["amount"], 1999)
 
     @patch("stripe.Customer.retrieve")
-    @patch("payments.models.Customer.sync")
-    @patch("payments.models.Customer.sync_current_subscription")
-    @patch("payments.models.Customer.sync_invoices")
-    @patch("payments.models.Customer.sync_charges")
+    @patch("drfstripe.models.Customer.sync")
+    @patch("drfstripe.models.Customer.sync_current_subscription")
+    @patch("drfstripe.models.Customer.sync_invoices")
+    @patch("drfstripe.models.Customer.sync_charges")
     def test_sync_customers(self, SyncChargesMock, SyncInvoicesMock, SyncSubscriptionMock, SyncMock, RetrieveMock):
         user2 = get_user_model().objects.create_user(username="thomas")
         get_user_model().objects.create_user(username="altman")
