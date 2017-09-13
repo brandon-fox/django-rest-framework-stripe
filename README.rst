@@ -10,8 +10,8 @@ Django REST Framework wrapper of the payments Django app for Stripe
 
 Install
 ======================
-* pip install django-rest-framework-stripe
-* Add 'payments' to INSTALLED_APPS
+* pip install -e git+https://github.com/Guest007/django-rest-framework-stripe.git#egg=drfstripe
+* Add 'drfstripe' to INSTALLED_APPS
 * **Add to urls.py:** ``url(r"^api/stripe/", include("drfstripe.api.urls"))``
 
 Endpoints

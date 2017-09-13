@@ -12,7 +12,7 @@ def read(*parts):
 
 PACKAGE = "drfstripe"
 NAME = "django-rest-framework-stripe"
-DESCRIPTION = "Django REST Framework wrapper of the drfstripe Django app for Stripe"
+DESCRIPTION = "Django REST Framework wrapper of the payments Django app for Stripe"
 AUTHOR = "Mohammed Hammoud"
 AUTHOR_EMAIL = "mohammed@iktw.se"
 URL = "https://github.com/iktw/django-rest-framework-stripe"
