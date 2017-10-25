@@ -893,10 +893,13 @@ class Charge(StripeObject):
         return obj
 
     def send_receipt(self):
+        from django.contrib.sites.models import Site
         if not self.receipt_sent:
+            site = Site.objects.get_current()
             protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
             ctx = {
                 "charge": self,
+                "site": site,
                 "protocol": protocol,
             }
             subject = render_to_string("drfstripe/email/subject.txt", ctx)
