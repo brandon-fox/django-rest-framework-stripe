@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
-from payments.api import views
+from drfstripe.api import views
 
 urlpatterns = [
     url(r'^current-user/$', views.CurrentCustomerDetailView.as_view(), name='stripe-current-customer-detail'),

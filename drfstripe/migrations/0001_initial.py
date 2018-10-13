@@ -90,7 +90,7 @@ class Migration(migrations.Migration):
                 ('validated_message', jsonfield.fields.JSONField(null=True)),
                 ('valid', models.NullBooleanField()),
                 ('processed', models.BooleanField(default=False)),
-                ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='payments.Customer')),
+                ('customer', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='drfstripe.Customer')),
             ],
             options={
                 'abstract': False,
@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
                 ('message', models.CharField(max_length=500)),
                 ('traceback', models.TextField()),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('event', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='payments.Event')),
+                ('event', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='drfstripe.Event')),
             ],
         ),
         migrations.CreateModel(
@@ -124,7 +124,7 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField()),
                 ('charge', models.CharField(blank=True, max_length=50)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invoices', to='payments.Customer')),
+                ('customer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='invoices', to='drfstripe.Customer')),
             ],
             options={
                 'ordering': ['-date'],
@@ -145,7 +145,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(blank=True, max_length=200)),
                 ('plan', models.CharField(blank=True, max_length=100)),
                 ('quantity', models.IntegerField(null=True)),
-                ('invoice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='payments.Invoice')),
+                ('invoice', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='items', to='drfstripe.Invoice')),
             ],
         ),
         migrations.CreateModel(
@@ -173,7 +173,7 @@ class Migration(migrations.Migration):
                 ('refund_gross', models.DecimalField(decimal_places=2, max_digits=9, null=True)),
                 ('validation_count', models.IntegerField(null=True)),
                 ('validation_fees', models.DecimalField(decimal_places=2, max_digits=9, null=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='transfers', to='payments.Event')),
+                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='transfers', to='drfstripe.Event')),
             ],
             options={
                 'abstract': False,
@@ -189,22 +189,22 @@ class Migration(migrations.Migration):
                 ('description', models.TextField(blank=True, null=True)),
                 ('kind', models.CharField(max_length=150)),
                 ('created_at', models.DateTimeField(default=django.utils.timezone.now)),
-                ('transfer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='charge_fee_details', to='payments.Transfer')),
+                ('transfer', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='charge_fee_details', to='drfstripe.Transfer')),
             ],
         ),
         migrations.AddField(
             model_name='currentsubscription',
             name='customer',
-            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='current_subscription', to='payments.Customer'),
+            field=models.OneToOneField(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='current_subscription', to='drfstripe.Customer'),
         ),
         migrations.AddField(
             model_name='charge',
             name='customer',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='charges', to='payments.Customer'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='charges', to='drfstripe.Customer'),
         ),
         migrations.AddField(
             model_name='charge',
             name='invoice',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='charges', to='payments.Invoice'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='charges', to='drfstripe.Invoice'),
         ),
     ]

@@ -5,7 +5,7 @@ from django.utils import timezone
 from mock import patch, Mock
 
 from ..models import Customer, Event, CurrentSubscription
-from payments.signals import WEBHOOK_SIGNALS
+from drfstripe.signals import WEBHOOK_SIGNALS
 from ..utils import get_user_model
 
 

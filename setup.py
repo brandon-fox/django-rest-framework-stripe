@@ -10,7 +10,7 @@ def read(*parts):
         return fp.read()
 
 
-PACKAGE = "payments"
+PACKAGE = "drfstripe"
 NAME = "django-rest-framework-stripe"
 DESCRIPTION = "Django REST Framework wrapper of the payments Django app for Stripe"
 AUTHOR = "Mohammed Hammoud"

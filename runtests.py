@@ -22,7 +22,7 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.auth.middleware.AuthenticationMiddleware",
         "django.contrib.messages.middleware.MessageMiddleware"
     ],
-    ROOT_URLCONF="payments.urls",
+    ROOT_URLCONF="drfstripe.urls",
     INSTALLED_APPS=[
         "django.contrib.auth",
         "django.contrib.contenttypes",
@@ -30,7 +30,7 @@ DEFAULT_SETTINGS = dict(
         "django.contrib.sites",
         "django_forms_bootstrap",
         "jsonfield",
-        "payments",
+        "drfstripe",
     ],
     SITE_ID=1,
     STRIPE_PUBLIC_KEY="",
@@ -66,8 +66,8 @@ DEFAULT_SETTINGS = dict(
     },
     SUBSCRIPTION_REQUIRED_EXCEPTION_URLS=["payments_subscribe"],
     SUBSCRIPTION_REQUIRED_REDIRECT="payments_subscribe",
-    PAYMENTS_TRIAL_PERIOD_FOR_USER_CALLBACK="payments.tests.callbacks.callback_demo",
-    PAYMENTS_PLAN_QUANTITY_CALLBACK="payments.tests.callbacks.quantity_call_back"
+    PAYMENTS_TRIAL_PERIOD_FOR_USER_CALLBACK="drfstripe.tests.callbacks.callback_demo",
+    PAYMENTS_PLAN_QUANTITY_CALLBACK="drfstripe.tests.callbacks.quantity_call_back"
 )
 
 
@@ -85,7 +85,7 @@ def runtests(*test_args):
     try:
         from django.test.runner import DiscoverRunner
         runner_class = DiscoverRunner
-        test_args = ["payments.tests"]
+        test_args = ["drfstripe.tests"]
     except ImportError:
         from django.test.simple import DjangoTestSuiteRunner
         runner_class = DjangoTestSuiteRunner

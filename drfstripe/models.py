@@ -424,6 +424,15 @@ class Customer(StripeObject):
         cu.save()
         self.save_card(cu)
 
+    def delete_card(self):
+        cu = self.stripe_customer
+        cu.active_card.delete()
+        self.card_fingerprint = ""
+        self.card_last_4 = ""
+        self.card_kind = ""
+        self.save()
+        card_changed.send(sender=self, stripe_response=cu)
+
     def save_card(self, cu=None):
         cu = cu or self.stripe_customer
         active_card = cu.active_card
@@ -884,15 +893,18 @@ class Charge(StripeObject):
         return obj
 
     def send_receipt(self):
+        from django.contrib.sites.models import Site
         if not self.receipt_sent:
+            site = Site.objects.get_current()
             protocol = getattr(settings, "DEFAULT_HTTP_PROTOCOL", "http")
             ctx = {
                 "charge": self,
+                "site": site,
                 "protocol": protocol,
             }
-            subject = render_to_string("payments/email/subject.txt", ctx)
+            subject = render_to_string("drfstripe/email/subject.txt", ctx)
             subject = subject.strip()
-            message = render_to_string("payments/email/body.txt", ctx)
+            message = render_to_string("drfstripe/email/body.txt", ctx)
             num_sent = EmailMessage(
                 subject,
                 message,
